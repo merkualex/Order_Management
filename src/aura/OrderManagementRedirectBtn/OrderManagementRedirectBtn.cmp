@@ -1,0 +1,7 @@
+<aura:component controller="OrderManagement" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+    <aura:attribute name="ac" type="Account"/>
+    <aura:attribute name="userSettings" type="User"/> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--Button to main window-->
+    <lightning:button label="Open Order Management Page" onclick="{!c.goToCMP}"/>
+</aura:component>

@@ -1,0 +1,58 @@
+<aura:component controller="searchProductController" >
+    <aura:attribute name="newProduct" type="Product__c"
+                    default="{ 'sobjectType': 'Product__c',
+                             'Name': '',
+                             'Price__c': 0,
+                             'Description__c': '',
+                             'Type__c': '',
+                             'Family__c': ''}"/>
+    
+    <lightning:layout>
+        <lightning:layoutItem padding="around-small" size="6">
+            <!-- CREATE NEW PRODUCT -->
+            <div aria-labelledby="newProductForm">
+                
+                <fieldset class="slds-box slds-theme--default slds-container--small">
+                    <legend id="newProductForm" class="slds-text-heading--small 
+                                                       slds-p-vertical--medium">
+                        Create Product
+                    </legend>
+                    
+                    <!-- CREATE NEW PRODUCT FORM -->
+                    <form class="slds-form--stacked">          
+                        <lightning:input aura:id="productform" label="Product Name"
+                                         name="productname"
+                                         value="{!v.newProduct.Name}"
+                                         required="true"/> 
+                        <lightning:input type="decimal" aura:id="productform" label="Price"
+                                         name="productPrice"
+                                         formatter="currency"
+                                         value="{!v.newProduct.Price__c}"
+                                         required="true"/>
+                        <lightning:input aura:id="productform" label="Description"
+                                         name="productDescription"
+                                         value="{!v.newProduct.Description__c}"
+                                         placeholder="Add description"
+                                         required="true"/>
+                        <lightning:input aura:id="productform" label="Type"
+                                         name="productType"
+                                         value="{!v.newProduct.Type__c}"
+                                         placeholder="Add Type"
+                                         required="true"/>
+                        <lightning:input aura:id="productform" label="Family"
+                                         name="productFamily"
+                                         value="{!v.newProduct.Family__c}"
+                                         placeholder="Add Family"
+                                         required="true"/>
+                        <lightning:button label="Create Product" 
+                                          class="slds-m-top--medium"
+                                          variant="brand"
+                                          onclick="{!c.createProduct}"/>
+                    </form>
+                    <!-- END CREATE NEW PRODUCT FORM -->                    
+                </fieldset>
+            </div>
+            <!-- END CREATE NEW PRODUCT -->
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

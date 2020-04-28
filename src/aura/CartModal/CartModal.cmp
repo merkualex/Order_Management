@@ -1,0 +1,83 @@
+<aura:component description="modal Cart window" controller="OrderManagement" extensible="true">
+    <aura:attribute name="isActive" type="Boolean" default="false" required="true" />
+    <aura:attribute name="title" type="String" default="Shopping cart" required="false" />
+    <aura:attribute name="ProductList" type="Product__c[]"/>
+    <aura:attribute name="Sum" type="Decimal"/>
+    <aura:attribute name="AccId" type="String"/>    
+    
+    <!-- Cart modal window -->
+    <div>
+        <aura:renderIf isTrue="{!v.isActive}">
+            <section role="dialog" tabindex="-1" aria-label="Shopping cart" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    
+                    <!-- Modal header -->
+                    <header class="{!'slds-modal__header' + (empty(v.title) ? ' slds-modal__header slds-modal__header_empty' : '')}">
+                        <lightning:buttonIcon alternativeText="Close" onclick="{!c.handleCancel}" iconName="utility:close" variant="bare" size="large" class="slds-modal__close slds-button_icon-inverse" />
+                        <h2 class="slds-text-heading_medium slds-hyphenate">{!v.title}</h2>
+                    </header>
+                    <!-- End Modal header -->
+                    
+                    <!-- Selected product table -->
+                    <div class="slds-modal__content slds-p-around--large" id="modal-content-id-1">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Product Name">Product Name</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Description">Description</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Type">Type</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Family">Family</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Price">Price</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <aura:iteration items="{!v.ProductList}" var="product">
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Product Name">
+                                            <div class="slds-truncate" >{!product.Name}</div>
+                                        </td>
+                                        <td data-label="Description">
+                                            <div class="slds-truncate" >{!product.Description__c}</div>
+                                        </td>
+                                        <td data-label="Type">
+                                            <div class="slds-truncate" >{!product.Type__c}</div>
+                                        </td>
+                                        <td data-label="Family">
+                                            <div class="slds-truncate" >{!product.Family__c}</div>
+                                        </td>
+                                        <td data-label="Price">
+                                            <div class="slds-truncate" ><lightning:formattedNumber value="{!product.Price__c}" style="currency" currencyCode="USD"/></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </aura:iteration>
+                        </table>
+                    </div>
+                    <!-- End Selected product table -->
+                    
+                    <!-- Footer -->
+                    <footer class="slds-modal__footer">
+                        <div><h1>Total:  <lightning:formattedNumber value="{!v.Sum}" style="currency" currencyCode="USD"/></h1> </div>
+                        <button class="slds-button slds-button_neutral" onclick="{!c.handleCancel}">Back</button>
+                        <aura:if isTrue="{!not(empty(v.ProductList))}">
+                            <button class="slds-button slds-button_brand" onclick="{!c.createOrder}">Checkout</button>
+                        </aura:if>
+                    </footer>
+                    <!-- End Footer -->
+                </div>
+            </section>
+        </aura:renderIf>        
+        <div class="{!'slds-backdrop ' + ((v.isActive) ? 'slds-backdrop_open' : 'slds-backdrop_close')}"></div>
+    </div>
+    <!-- End Cart modal window -->
+</aura:component>

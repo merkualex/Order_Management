@@ -1,0 +1,66 @@
+<aura:component controller="searchProductController">
+    <aura:attribute name="keywordHolder" type="string" />
+    <aura:attribute name="productList" type="List" />
+    <aura:attribute name="productListFull" type="List" />
+    <aura:attribute name="productTypes" type="String[]"/>
+    <aura:attribute name="productFamilies" type="String[]"/>
+    <aura:attribute name="description" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="addToCartEvent" type="c:addProductEvent"/>
+    
+    <!-- Order management main window -->
+    <div class="slds-grid slds-gutters">
+        <!--Filters-->
+        <div class="slds-col slds-size_1-of-3">
+            <span><h1>Filter Product</h1></span>
+            <lightning:select aura:id="typeFilter" label="Type" onfocus="{!c.fetchFilter}" onchange="{!c.filterproduct}">
+                <option value="">Choose one...</option>
+                <aura:iteration items="{!v.productTypes}" var="s">
+                    <option value="{!s}">{!s}</option>
+                </aura:iteration>
+            </lightning:select>
+            <div></div>
+            <lightning:select aura:id="familyFilter" label="Family" onfocus="{!c.fetchFilter}" onchange="{!c.filterproduct}">
+                <option value="">Choose one...</option>
+                <aura:iteration items="{!v.productFamilies}" var="s">
+                    <option value="{!s}">{!s}</option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <!-- End Filters-->
+        
+        
+        <!-- Search box-->
+        <div class="slds-col slds-size_2-of-3">
+            <lightning:input name="ProductSearch"  label="Enter Product Name" value="{!v.keywordHolder}"/>
+            <lightning:button label="Search Product" onclick="{!c.filterproduct}" />
+            <!-- End Search box--> 
+            
+            <!-- Product cards -->   
+            <div class="slds-grid slds-wrap">
+                <aura:iteration var="product" items="{!v.productList}" >
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning:card title="{!product.Name}" footer="Footer" >
+                            <aura:set attribute="footer">
+                                <lightning:button label="Details" aura:id="{!product.Id}" onclick="{!c.showdescription}"/>
+                                <lightning:button label="ADD" onclick="{!c.addToCart}" value="{!product.Id}"/>
+                            </aura:set>
+                            <p class="slds-p-horizontal_small">
+                                <lightning:formattedNumber value="{!product.Price__c}" style="currency" currencyCode="USD"/>
+                            </p>
+                            <aura:if isTrue="{!v.description}">
+                                <p>
+                                    ID={!product.Id}
+                                    Description={!product.Description__c}
+                                </p>
+                            </aura:if>
+                        </lightning:card>
+                    </div>
+                </aura:iteration>
+            </div>
+            <!-- End Product cards --> 
+        </div>
+    </div>
+    <!-- End Order management main window -->
+    
+</aura:component>

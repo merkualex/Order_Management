@@ -1,0 +1,81 @@
+<aura:component controller="OrderManagement" >
+    <aura:attribute name="ac" type="Account"/>
+    <aura:attribute name="userSettings" type="User"/>    
+    <aura:attribute name="showCart" type="Boolean" default="false" />    
+    <aura:attribute name="showAddProductForm" type="Boolean" default="false" />
+    <aura:attribute name="products" type="Product__c[]"/>
+    <aura:attribute name="addedProducts" type="Product__c[]" default="[]"/>
+    <aura:attribute name="totalSum" type="Decimal" default="0"/>
+    
+    <aura:handler name="addToCartEvent" event="c:addProductEvent" action="{!c.handleAddProductEvent}"/>   
+    
+    <!--Cart modal window-->
+    <c:CartModal isActive="{!v.showCart}" ProductList="{!v.addedProducts}" Sum="{!v.totalSum}" AccId="{!v.ac.Id}" />
+    <!--End Cart modal windowr-->
+    
+    <!--Header-->
+    <div class="slds-page-header slds-page-header_record-home">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate">{!v.ac.Name}</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate">{!v.ac.AccountNumber}</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control">
+                        <aura:if isTrue="{!v.userSettings.IsManager__c}">
+                            <button class="slds-button slds-button_neutral" onclick="{!c.showAddProductForm}">Create product</button>
+                        </aura:if>
+                    </div>
+                    <div class="slds-page-header__control">
+                        <button class="slds-button slds-button_brand" onclick="{!c.handleOpenCart}">Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!v.showAddProductForm}">
+            <c:CreateProductForm/>
+        </aura:if>
+    </div> 
+    <!--End Header-->
+    
+    <!--Item list component-->
+    <div class="slds-page-header">
+        <div class="slds-grid slds-gutters">            
+            <div class="slds-col">                
+                <div class="slds-page-header">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <div class="slds-page-header__name-title">                   
+                                <c:ItemCard/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>        
+    </div>   
+    <!--Item list component-->
+</aura:component>
